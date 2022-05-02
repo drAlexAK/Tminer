@@ -7,5 +7,5 @@ private:
 public:
     Font(int type, int color, int bg_color);
     std::string ToString();
-    std::string ToString(int type, int color, int bg_color);
+    std::string _ToString(int _type, int _color, int _bg_color);
 };

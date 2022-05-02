@@ -1,19 +1,13 @@
-#include <iostream>
-//#include "Font.h"
-//#include "Console.h"
-#include "Print.h"
+#include "Game.h"
 
 using namespace std;
 
 int main() {
-
-    Print::PutFlag(2, 2);
-    int a;
-    cin >> a;
-    Print::PrintCursor(2, 2, FLAG);
-    cin >> a;
-    Print::RemoveFlag(2, 2, TIP_2, REGULAR);
-
+    int a, b;
+    cin >> a >> b;
+    Game::InitGame(20, 20, 40, a, b);
+    while(cin >> a >> b){
+        Game::OpenCell(a, b);
+    }
     return 0;
 }
- 

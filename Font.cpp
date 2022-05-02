@@ -6,21 +6,21 @@ Font::Font(int type, int color, int bg_color){
     this->bg_color = bg_color;
 }
 
-std::string Font::ToString() {
-    return ToString(type, color, bg_color);
+std::string Font::ToString(){
+    return _ToString(type, color, bg_color);
 }
 
-std::string Font::ToString(int type, int color, int bg_color) {
+std::string Font::_ToString(int _type, int _color, int _bg_color) {
     std::string ans;
-    if (type != -1) {
-        ans.append(std::to_string(type));
-        if (color != -1 || bg_color != -1)ans.push_back(';');
+    if (_type != -1) {
+        ans.append(std::to_string(_type));
+        if (_color != -1 || _bg_color != -1)ans.push_back(';');
     }
-    if (color != -1) {
-        ans.append(std::to_string(color));
-        if (bg_color != -1) ans.push_back(';');
+    if (_color != -1) {
+        ans.append(std::to_string(_color));
+        if (_bg_color != -1) ans.push_back(';');
     }
-    if (bg_color != -1) { ans.append(std::to_string(bg_color)); }
+    if (_bg_color != -1) { ans.append(std::to_string(_bg_color)); }
     return ans;
 }
 

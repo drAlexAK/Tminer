@@ -5,13 +5,13 @@ void Console::Flush(){
     std::fflush(stdout);
 }
 
-void Console::PrintSymbol(int x, int y, std::string &s, Font &f) {
+void Console::PrintSymbol(int x, int y, const std::string s, Font f) {
     std::string cmd = f.ToString();
     printf("\033[%d;%dH\x1b[%sm%s\x1b[0m", x+1, y+1, cmd.c_str(), s.c_str());
     Flush();
 }
 
-void Console::PrintString(const std::string &s, Font &f){
+void Console::PrintString(const std::string s, Font f){
     std::string cmd = f.ToString();
     for(int i = 0; i < (int)s.size(); i++){
         std::string ch = s.substr(i, 1);

@@ -1,5 +1,6 @@
 enum OBJECT_TYPE{
-    TIP_1 = 1,
+    TIP_0 = 0,
+    TIP_1,
     TIP_2,
     TIP_3,
     TIP_4,
@@ -8,7 +9,8 @@ enum OBJECT_TYPE{
     TIP_7,
     TIP_8,
     MINE,
-    FLAG
+    FLAG,
+    HIDDEN
 };
 
 enum OBJECT_STATE{
