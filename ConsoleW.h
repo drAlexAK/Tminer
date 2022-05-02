@@ -1,10 +1,12 @@
 #include <string>
-#include <Windows.h>
+#include <windows.h>
 #include "Font.h"
 
 class Console{
-public:
 
+public:
+    static int Init();
+    static int Restore();
     static void PrintSymbol(int x, int y, std::string s, Font f);
     static void PrintString(std::string s, Font f);
     static void Flush();
