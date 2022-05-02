@@ -2,9 +2,10 @@
 #include "Font.h"
 
 class Console{
-	public:
+public:
 
-    static void PrintChar(int x, int y, const char c, Font &f);
+    static void PrintSymbol(int x, int y, const char c, Font &f);
+    static void PrintSymbol(int x, int y, std::string &s, Font &f);
     static void PrintString(const std::string &s, Font &f);
     static void Flush();
     static void Clear();

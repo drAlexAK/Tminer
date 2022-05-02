@@ -12,5 +12,10 @@ enum OBJECT_TYPE{
 };
 
 enum OBJECT_STATE{
-    REGULAR = 0
+    REGULAR = 0,
+    // marked
+    OPENED,
+    // flag
+    PUTFLAG,
+    CURSOR
 };

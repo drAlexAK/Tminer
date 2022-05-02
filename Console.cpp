@@ -2,16 +2,12 @@
 #include <iostream>
 
 void Console::Flush(){
-	std::fflush(stdout);
+    std::fflush(stdout);
 }
 
-void Console::PrintChar(int x, int y, const char c, Font &f) {
-   // std::string cmd = f.ToString();
-    //std::string s(1, c);
-
-    std::string cmd = "";
-    std::string ff = "f";
-    printf("\033[%d;%dH\x1b[%sm%s\x1b[0m", x+1, y+1, cmd.c_str(), ff.c_str());
+void Console::PrintSymbol(int x, int y, std::string &s, Font &f) {
+    std::string cmd = f.ToString();
+    printf("\033[%d;%dH\x1b[%sm%s\x1b[0m", x+1, y+1, cmd.c_str(), s.c_str());
     Flush();
 }
 
@@ -25,15 +21,15 @@ void Console::PrintString(const std::string &s, Font &f){
 }
 
 void Console::Clear(){
-	system("clear");
+    system("clear");
 }
 
 void Console::Out(const std::string &s){
-	std::cout << s;
+    std::cout << s;
 }
 
 int Console::In(){
-	int a;
-	std::cin >> a;
-	return a;
+    int a;
+    std::cin >> a;
+    return a;
 }

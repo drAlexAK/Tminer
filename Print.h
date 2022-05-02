@@ -10,12 +10,14 @@
 
 class Print{
 
-    
+
 public:
-    static std::map<OBJECT_TYPE, char> oChar;
+    static std::map<OBJECT_TYPE, std::string> oChar;
     static std::map<OBJECT_STATE, Font> oState;
     static void PrintObjectInPlace(int x, int y, OBJECT_TYPE object_type, OBJECT_STATE object_state);
-
+    static void PutFlag(int x, int y);
+    static void RemoveFlag(int x, int y, OBJECT_TYPE type, OBJECT_STATE state);
+    static void PrintCursor(int x, int y, OBJECT_TYPE type);
 
     //class Console;
     // this is stub
@@ -25,7 +27,7 @@ public:
 
     static const std::vector<std::vector<int>> table;
     static const std::vector<std::vector<int>> used;
-    static const std::vector<std::vector<int>> visiualtable; 
+    static const std::vector<std::vector<int>> visiualtable;
     // end of stub
 
 

@@ -1,26 +1,18 @@
-
 #include <iostream>
-//#include "Print.h"
-#include "Font.h"
-//#include "Objects.h"
+//#include "Font.h"
+//#include "Console.h"
+#include "Print.h"
 
 using namespace std;
 
-int main(){
-	//int a;
-	//cin >> a;
+int main() {
 
-
-	//Print::PrintObjectInPlace(10, 10, TIP_2, REGULAR);
-	
-	//Font f = Font(0,0,0);
-
-    //auto ff = f;
-
-    //char ff = 'f';
-	//Console::PrintChar(5, 5, ff, f);
-
-	//cout << a << "\n";
+    Print::PutFlag(2, 2);
+    int a;
+    cin >> a;
+    Print::PrintCursor(2, 2, FLAG);
+    cin >> a;
+    Print::RemoveFlag(2, 2, TIP_2, REGULAR);
 
     return 0;
 }
