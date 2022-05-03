@@ -1,6 +1,42 @@
 #include "ConsoleW.h"
 #include <iostream>
 
+
+static DWORD originalConsoleMode;;
+static HANDLE stdoutHandle;
+
+int Console::Init() {
+ 	DWORD currentConsoleMode = 0;
+
+ 	stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+  	if(stdoutHandle == INVALID_HANDLE_VALUE) {
+ 		return(GetLastError());
+	}
+ 	
+ 	if(!GetConsoleMode(stdoutHandle, &currentConsoleMode)) {
+      	return(GetLastError());
+ 	}
+ 
+ 	originalConsoleMode = currentConsoleMode;
+ 	
+    // Set ANSI escape codes
+ 	currentConsoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+ 
+ 	if(!SetConsoleMode(stdoutHandle, currentConsoleMode)) {
+ 		return(GetLastError());
+ 	}	
+}
+ 
+ int Console::Restore() {
+    // Reset colors
+    printf("\x1b[0m");	
+ 	
+    // Set original console mode
+ 	if(!SetConsoleMode(stdoutHandle, originalConsoleMode)) {
+ 		return(GetLastError());
+ 	}
+}
+
 void Console::Flush(){
     std::fflush(stdout);
 }
@@ -21,7 +57,27 @@ void Console::PrintString(const std::string s, Font f){
 }
 
 void Console::Clear(){
-    system("clr");
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD count;
+    DWORD cellCount;
+
+    stdoutHandle = GetStdHandle( STD_OUTPUT_HANDLE );
+    if (stdoutHandle == INVALID_HANDLE_VALUE) return;
+
+    // Get the number of cells in the current buffer
+    if (!GetConsoleScreenBufferInfo( stdoutHandle, &csbi )) return;
+    cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+    // Fill the entire buffer with spaces
+    if (!FillConsoleOutputCharacter(stdoutHandle, (TCHAR) ' ', cellCount, homeCoords, &count)) return;
+
+    // Fill the entire buffer with the current colors and attributes
+    if (!FillConsoleOutputAttribute( stdoutHandle, csbi.wAttributes, cellCount, homeCoords, &count)) return;
+
+    // Move the cursor top-left corner 
+    COORD homeCoords = { 0, 0 };
+    SetConsoleCursorPosition( stdoutHandle, homeCoords );
+
 }
 
 void Console::Cursor(bool enable){
