@@ -3,11 +3,11 @@
 using namespace std;
 
 int main() {
-    int a, b;
-    cin >> a >> b;
-    Game::InitGame(20, 20, 40, a, b);
-    while(cin >> a >> b){
-        Game::OpenCell(a, b);
+    Print::removeConsoleCursor();
+    Game::InitGame(20, 20, 50, 1, 1);
+    while(1){
+        Game::movementControl();
     }
+    Print::addConsoleCursor();
     return 0;
 }

@@ -15,11 +15,6 @@
 #define BG_WHITE 47
 #define BG_BLUE 44
 
-#define right 108
-#define down 107
-#define left 106
-#define up 105
-
 #define righta 3067
 #define downa 3066
 #define lefta 3068

@@ -18,10 +18,6 @@
 #define BG_BLUE 44
 
 //===================== keys value
-#define right 108
-#define down 107
-#define left 106
-#define up 105
 
 #define righta 3067
 #define downa 3066

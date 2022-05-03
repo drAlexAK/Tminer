@@ -15,8 +15,8 @@ std::map<OBJECT_TYPE, std::string> Print::oChar =   {{TIP_1, "1"},
                                                      {MINE, "*"}};
 
 std::map<OBJECT_STATE, Font> Print::oState =  {{REGULAR, Font(NONE, BLACK, BG_WHITE)},
-                                               {PUTFLAG, {BOLD, BLACK, BG_WHITE}},
-                                               {CURSOR, {BLINKING, BLACK, BG_WHITE}}};
+                                               {PUTFLAG, {NONE, BLACK, BG_WHITE}},
+                                               {CURSOR, {BLINKING, WHITE, BG_BLACK}}};
 
 void Print::PrintObjectInPlace(int x, int y, OBJECT_TYPE object_type, OBJECT_STATE object_state){
     Console::PrintSymbol(x, y, Print::oChar.at(object_type), Print::oState.at(object_state));
@@ -44,4 +44,17 @@ void Print::PutHidden(int x, int y){
 
 void Print::PutTip(int x, int y, OBJECT_TYPE type){
     Print::PrintObjectInPlace(x, y, type, REGULAR);
+}
+
+void Print::MoveCursor(int x, int y, OBJECT_TYPE type1, int x2, int y2, OBJECT_TYPE type2) {
+    Print::PrintObjectInPlace(x, y, type1, REGULAR);
+    Print::PrintObjectInPlace(x2, y2, type2, CURSOR);
+}
+
+void Print::removeConsoleCursor() {
+    std::cout << "\033[?25l";
+}
+
+void Print::addConsoleCursor() {
+    std::cout << "\\033[?25h";
 }

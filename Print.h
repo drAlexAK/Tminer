@@ -14,7 +14,10 @@ public:
 
     static void PutFlag(int x, int y);
     static void PutHidden(int x, int y);
+    static void removeConsoleCursor();
+    static void addConsoleCursor();
     static void PutTip(int x, int y, OBJECT_TYPE type);
+    static void MoveCursor(int x, int y, OBJECT_TYPE type1, int x2, int y2, OBJECT_TYPE type2);
 
     static void RemoveFlag(int x, int y, OBJECT_TYPE type, OBJECT_STATE state);
     static void PrintCursor(int x, int y, OBJECT_TYPE type);
