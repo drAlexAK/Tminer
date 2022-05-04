@@ -1,6 +1,9 @@
 #include "Print.h"
 #include "Definitions.h"
 
+int Print::xBeginCoor = 1;
+int Print::yBeginCoor = 1;
+
 std::map<OBJECT_TYPE, std::string> Print::oChar =   {{TIP_1, "1"},
                                                      {TIP_2, "2"},
                                                      {TIP_3, "3"},
@@ -21,7 +24,7 @@ std::map<OBJECT_STATE, Font> Print::oState =  {{REGULAR, Font(NONE, BLACK, BG_WH
                                                {CURSOR, {BLINKING, WHITE, BG_BLACK}}};
 
 void Print::PrintObjectInPlace(int x, int y, OBJECT_TYPE object_type, OBJECT_STATE object_state){
-    Console::PrintSymbol(x, y, Print::oChar.at(object_type), Print::oState.at(object_state));
+    Console::PrintSymbol(x + xBeginCoor, y + yBeginCoor, Print::oChar.at(object_type), Print::oState.at(object_state));
 }
 
 void Print::PutFlag(int x, int y){
@@ -76,4 +79,8 @@ void Print::PrintWin() {
                  " \\ V /  | (_) | | |_| |        \\ \\/\\/ /  | (_) | | .` |\n"
                  "  |_|    \\___/   \\___/          \\_/\\_/    \\___/  |_|\\_|\n");
     Print::addConsoleCursor();
+}
+
+void Print::PrintChar(int x, int y, std::string s){
+    Console::PrintSymbol(x + xBeginCoor, y + yBeginCoor, s, {NONE, NONE, NONE});
 }

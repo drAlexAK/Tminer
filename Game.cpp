@@ -223,7 +223,7 @@ void Game::movementControl() {
     }
 }
 
-void Game::game() {
+void Game::Play() {
     Console::Clear();
     Print::PrintString("Please enter n, m, count of mines\n");
     Game::n = Console::In();
@@ -235,6 +235,8 @@ void Game::game() {
     Print::removeConsoleCursor();
     Game::InitMap(n, m);
     Game::PrintMap();
+    Game::PrintCircuit();
+    Print::PrintCursor(curPosX, curPosY, HIDDEN);
 
     while(!Game::wasFirstMove){
         Game::movementControl();
@@ -246,10 +248,14 @@ void Game::game() {
     }
 
     Print::PrintWin();
+    Keyboard::GetKey();
+    Print::addConsoleCursor();
+    Console::Clear();
 }
 
 void Game::LosePrint() {
     Console::Clear();
+    Game::PrintCircuit();
     for(int i = 1; i <= n; i++){
         for(int j = 1; j <= m; j++){
             Game::LosePrintCurCell(i, j);
@@ -269,4 +275,15 @@ void Game::LosePrintCurCell(int x, int y) {
     }else {
         Game::PrintPos(x, y);
     }
+}
+
+void Game::PrintCircuit(){
+    for(int i = 1; i <= m; i++) Print::PrintChar(0, i, "━");
+    for(int i = 1; i <= m; i++) Print::PrintChar(n+1, i, "━");
+    for(int i = 1; i <= n; i++) Print::PrintChar(i, m+1, "┃");
+    for(int i = 1; i <= n; i++) Print::PrintChar(i, 0, "┃");
+    Print::PrintChar(n+1, 0, "┗");
+    Print::PrintChar(0, m+1, "┓");
+    Print::PrintChar(n+1, m+1, "┛");
+    Print::PrintChar(0, 0, "┏");
 }

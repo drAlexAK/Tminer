@@ -3,6 +3,6 @@
 using namespace std;
 
 int main() {
-    Game::game();
+    Game::Play();
     return 0;
 }

@@ -4,7 +4,6 @@
 #include <random>
 #include <set>
 
-
 class Game{
     // height and width of the map
     static int n, m;
@@ -25,6 +24,7 @@ class Game{
     static void movementControl();
     static void LosePrintCurCell(int x, int y);
     static void LosePrint();
+    static void PrintCircuit();
 public:
-    static void game();
+    static void Play();
 };
