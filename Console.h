@@ -1,4 +1,5 @@
 #include <string>
+#include <bits/stdc++.h>
 #include "Font.h"
 
 class Console{

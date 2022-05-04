@@ -16,6 +16,8 @@ std::map<OBJECT_TYPE, std::string> Print::oChar =   {{TIP_1, "1"},
 
 std::map<OBJECT_STATE, Font> Print::oState =  {{REGULAR, Font(NONE, BLACK, BG_WHITE)},
                                                {PUTFLAG, {NONE, BLACK, BG_WHITE}},
+                                               {MINEGREEN, {BLINKING, GREEN, BG_WHITE}},
+                                               {MINERED, {BLINKING, RED, BG_WHITE}},
                                                {CURSOR, {BLINKING, WHITE, BG_BLACK}}};
 
 void Print::PrintObjectInPlace(int x, int y, OBJECT_TYPE object_type, OBJECT_STATE object_state){
@@ -56,5 +58,22 @@ void Print::removeConsoleCursor() {
 }
 
 void Print::addConsoleCursor() {
-    std::cout << "\\033[?25h";
+    std::cout << "\033[?25h";
+}
+
+void Print::PrintString(std::string s) {
+    Console::PrintString(s, Print::oState.at(OBJECT_STATE::REGULAR));
+}
+
+void Print::PrintLose(int x, int y, OBJECT_STATE state) {
+    Print::PrintObjectInPlace(x, y, MINE, state);
+}
+
+void Print::PrintWin() {
+    Console::Clear();
+    Console::Out("__   __   ___    _   _        __      __   ___    _  _ \n"
+                 "\\ \\ / /  / _ \\  | | | |       \\ \\    / /  / _ \\  | \\| |\n"
+                 " \\ V /  | (_) | | |_| |        \\ \\/\\/ /  | (_) | | .` |\n"
+                 "  |_|    \\___/   \\___/          \\_/\\_/    \\___/  |_|\\_|\n");
+    Print::addConsoleCursor();
 }

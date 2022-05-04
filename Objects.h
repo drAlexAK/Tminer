@@ -19,5 +19,7 @@ enum OBJECT_STATE{
     OPENED,
     // flag
     PUTFLAG,
-    CURSOR
+    CURSOR,
+    MINEGREEN,
+    MINERED
 };

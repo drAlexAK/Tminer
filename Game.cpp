@@ -6,6 +6,8 @@ int Game::minesCount = 0;
 std::vector<std::vector<int>> Game::table;
 int Game::curPosX = 1;
 int Game::curPosY = 1;
+int Game::wasFirstMove = 0;
+int Game::cellsTillVictory = 0;
 
 std::mt19937 rnd(time(0));
 
@@ -100,6 +102,7 @@ void Game::Dfs(int x, int y) {
     if((Game::table[x][y] & used) != 0 || ((Game::table[x][y] & mines) != 0)) return;
 
     Game::table[x][y] |= used;
+    cellsTillVictory--;
 
     if((Game::table[x][y] % mines) != 0) return;
 
@@ -134,6 +137,7 @@ void Game::InitGame(int _n, int _m, int _minesCount, int x, int y) {
     Game::n = _n;
     Game::m = _m;
     Game::minesCount = _minesCount;
+    Game::cellsTillVictory = n*m - minesCount;
     Game::InitMap(x, y);
     Game::OpenCell(x, y);
 }
@@ -196,6 +200,10 @@ void Game::movementControl() {
             curPosX = std::min(n, curPosX+1);
             return;
         case Controller::MOVEMENT::DIG:
+            wasFirstMove = 1;
+            if((table[curPosX][curPosY] & mines) != 0)
+                Game::LosePrint();
+
             Game::OpenCell(curPosX, curPosY);
             return;
         case Controller::MOVEMENT::FLAGPUT:
@@ -203,9 +211,11 @@ void Game::movementControl() {
             if((table[curPosX][curPosY] & flag) != 0){
                 table[curPosX][curPosY] ^= flag;
                 Print::RemoveFlag(curPosX, curPosY, Game::GetTypePos(curPosX, curPosY), REGULAR);
+                Print::MoveCursor(curPosX, curPosY, type, curPosX, curPosY, OBJECT_TYPE::HIDDEN);
             }else {
                 table[curPosX][curPosY] |= flag;
                 Print::PutFlag(curPosX, curPosY);
+                Print::MoveCursor(curPosX, curPosY, type, curPosX, curPosY, OBJECT_TYPE::FLAG);
             }
             return;
         default:
@@ -213,3 +223,50 @@ void Game::movementControl() {
     }
 }
 
+void Game::game() {
+    Console::Clear();
+    Print::PrintString("Please enter n, m, count of mines\n");
+    Game::n = Console::In();
+    Game::m = Console::In();
+    Game::minesCount = Console::In();
+    Keyboard::GetKey();
+    Console::Clear();
+
+    Print::removeConsoleCursor();
+    Game::InitMap(n, m);
+    Game::PrintMap();
+
+    while(!Game::wasFirstMove){
+        Game::movementControl();
+    }
+
+    Game::InitGame(n, m, minesCount, curPosX, curPosY);
+    while(cellsTillVictory > 0){
+        Game::movementControl();
+    }
+
+    Print::PrintWin();
+}
+
+void Game::LosePrint() {
+    Console::Clear();
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            Game::LosePrintCurCell(i, j);
+        }
+    }
+    Print::addConsoleCursor();
+    Keyboard::GetKey();
+    exit(0);
+}
+
+void Game::LosePrintCurCell(int x, int y) {
+    if((table[x][y] & mines) != 0){
+        if((table[x][y] & flag) != 0)
+            Print::PrintLose(x, y, MINEGREEN);
+        else
+            Print::PrintLose(x, y, MINERED);
+    }else {
+        Game::PrintPos(x, y);
+    }
+}
