@@ -40,7 +40,7 @@ void Print::PrintCursor(int x, int y, OBJECT_TYPE type){
     Print::PrintObjectInPlace(x, y, type, CURSOR);
 }
 
-void Print::removeCursor(int x, int y, OBJECT_TYPE type){
+void Print::RemoveCursor(int x, int y, OBJECT_TYPE type){
     Print::PrintObjectInPlace(x, y, type, REGULAR);
 }
 
@@ -56,24 +56,17 @@ void Print::MoveCursor(int x, int y, OBJECT_TYPE type1, int x2, int y2, OBJECT_T
     Print::PrintObjectInPlace(x2, y2, type2, CURSOR);
 }
 
-void Print::removeConsoleCursor() {
-    std::cout << "\033[?25l";
-}
-
-void Print::addConsoleCursor() {
-    std::cout << "\033[?25h";
-}
-
 void Print::PrintString(std::string s) {
     Console::PrintString(s, Print::oState.at(OBJECT_STATE::REGULAR));
 }
 
 void Print::PrintLose(int x, int y, OBJECT_STATE state) {
     Print::PrintObjectInPlace(x, y, MINE, state);
-    //Console::Pause();
-    //Console::Clear();
-    //Print::PrintString("YOU LOSE\n");
-    /*Console::Out ("\n________________________________________________________\n"
+}
+
+void Print::PrintDead(){
+    Console::Clear();
+    Console::Out ("\n________________________________________________________\n"
                   "/                                                      \\\n"
                   "|                 Ha ha, you're dead                   |\n"
                   "\\_________              _______________________________/\n"
@@ -100,7 +93,6 @@ void Print::PrintWin() {
                  "\\ \\ / /  / _ \\  | | | |       \\ \\    / /  / _ \\  | \\| |\n"
                  " \\ V /  | (_) | | |_| |        \\ \\/\\/ /  | (_) | | .` |\n"
                  "  |_|    \\___/   \\___/          \\_/\\_/    \\___/  |_|\\_|\n");
-    Print::addConsoleCursor();
 }
 
 void Print::PrintChar(int x, int y, std::string s){
