@@ -1,4 +1,5 @@
 #include "Keyboard.h"
+#include <termios.h>
 
 #define KEY_RIGHT 3067
 #define KEY_DOWN 3066
