@@ -1,8 +1,6 @@
 #include "Console.h"
 #include <iostream>
 
-// https://www.nayab.xyz/linux/escapecodes
-
 int Console::Init(){return 0;}
 int Console::Restore(){
     printf("\033[m");
@@ -30,6 +28,10 @@ void Console::PrintString(const std::string s, Font f){
         printf("\x1b[%sm%s\x1b[0m", cmd.c_str(), ch.c_str());
     }
     Flush();
+}
+
+void Console::SetCursor(bool enable){
+    (enable ?  std::cout << "\033[?25h" :  std::cout << "\033[?25l");
 }
 
 void Console::Clear(){
