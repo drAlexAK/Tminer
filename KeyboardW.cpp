@@ -1,4 +1,5 @@
-#include "KeyboardW.h"
+#include "Keyboard.h"
+#include <conio.h>
 
 #define KEY_UP    72
 #define KEY_LEFT  75
