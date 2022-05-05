@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <set>
+#include <chrono>
 
 class Game{
     // height and width of the map
