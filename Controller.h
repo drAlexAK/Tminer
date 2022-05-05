@@ -1,10 +1,4 @@
-#ifdef __unix__
 #include "Keyboard.h"
-#else
-#include "KeyboardW.h"
-#endif
-
-
 #include "Definitions.h"
 
 class Controller{
