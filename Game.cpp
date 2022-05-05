@@ -10,7 +10,7 @@ int Game::wasFirstMove = 0;
 int Game::cellsTillVictory = 0;
 
 //std::mt19937 rnd(time(0));
-std::mt19937 rnd(0);
+std::mt19937 rnd(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
 #define mines 16
 #define flag 32
@@ -225,6 +225,7 @@ int Game::movementControl() {
 }
 
 void Game::Play() {
+    Console::Init();
     Console::Clear();
     Print::PrintString("Please enter n, m, count of mines\n");
     Game::n = Console::In();
@@ -233,9 +234,7 @@ void Game::Play() {
     Controller::GetCommand();
     Console::Clear();
 
-    Console::Init();
-
-    Print::removeConsoleCursor();
+    Console::SetCursor(false);
     Game::initMap(n, m);
     Game::printMap();
     Game::printCircuit();
@@ -249,7 +248,11 @@ void Game::Play() {
     while(cellsTillVictory > 0){
         if(Game::movementControl()){
             Game::losePrint();
+            Print::PrintDead();
+            Console::SetCursor(true);
+            Console::Restore();
             return;
+
         }
     }
 
@@ -257,7 +260,8 @@ void Game::Play() {
     Print::PrintString("Press any key to continue\n");
     Controller::GetCommand();
     Console::Clear();
-    Print::addConsoleCursor();
+    Console::Restore();
+    Console::SetCursor(true);
 }
 
 void Game::losePrint() {
@@ -268,7 +272,6 @@ void Game::losePrint() {
             Game::losePrintCurCell(i, j);
         }
     }
-    Print::addConsoleCursor();
     Print::PrintChar(n+2, 0, "");
     Print::PrintString("Press any key to continue\n");
     Controller::GetCommand();
