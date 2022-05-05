@@ -9,7 +9,8 @@ int Game::curPosY = 1;
 int Game::wasFirstMove = 0;
 int Game::cellsTillVictory = 0;
 
-std::mt19937 rnd(time(0));
+//std::mt19937 rnd(time(0));
+std::mt19937 rnd(0);
 
 #define mines 16
 #define flag 32
@@ -18,7 +19,7 @@ std::mt19937 rnd(time(0));
 // n - height, m - width
 // x, y - initial point
 
-void Game::InitMap(int x, int y) {
+void Game::initMap(int x, int y) {
 
 // the cort more for 2 columns and rows
     Game::table.resize(Game::n + 2, std::vector<int>(Game::m + 2, mines));
@@ -55,7 +56,7 @@ void Game::InitMap(int x, int y) {
 }
 
 // prints position on coord [x, y]
-void Game::PrintPos(int x, int y){
+void Game::printPos(int x, int y){
     if ((Game::table[x][y] & flag) != 0) {
         Print::PutFlag(x, y);
         return;
@@ -98,51 +99,50 @@ void Game::PrintPos(int x, int y){
 }
 
 // dfs - for spreading after strike
-void Game::Dfs(int x, int y) {
+void Game::dfs(int x, int y) {
     if((Game::table[x][y] & used) != 0 || ((Game::table[x][y] & mines) != 0)) return;
 
     Game::table[x][y] |= used;
     cellsTillVictory--;
 
     if((Game::table[x][y] % mines) != 0) return;
-
-    Dfs(x - 1, y);
-    Dfs(x + 1, y);
-    Dfs(x, y + 1);
-    Dfs(x, y - 1);
-    Dfs(x - 1, y + 1);
-    Dfs(x - 1, y - 1);
-    Dfs(x + 1, y + 1);
-    Dfs(x + 1, y - 1);
+    dfs(x - 1, y);
+    dfs(x + 1, y);
+    dfs(x, y + 1);
+    dfs(x, y - 1);
+    dfs(x - 1, y + 1);
+    dfs(x - 1, y - 1);
+    dfs(x + 1, y + 1);
+    dfs(x + 1, y - 1);
 }
 
 // prints map after strike
-void Game::PrintMap() {
+void Game::printMap() {
     for(int i = 1; i <= Game::n; i++){
         for(int j = 1; j <= Game::m; j++){
-            Game::PrintPos(i, j);
+            Game::printPos(i, j);
         }
     }
 }
 
 // handle strikes
-void Game::OpenCell(int x, int y) {
-    Game::Dfs(x, y);
-    PrintMap();
-    Print::PrintCursor(x, y, Game::GetTypePos(x, y));
+void Game::openCell(int x, int y) {
+    Game::dfs(x, y);
+    printMap();
+    Print::PrintCursor(x, y, Game::getTypePos(x, y));
 }
 
 // x, y - coord of the first strike
-void Game::InitGame(int _n, int _m, int _minesCount, int x, int y) {
+void Game::initGame(int _n, int _m, int _minesCount, int x, int y) {
     Game::n = _n;
     Game::m = _m;
     Game::minesCount = _minesCount;
     Game::cellsTillVictory = n*m - minesCount;
-    Game::InitMap(x, y);
-    Game::OpenCell(x, y);
+    Game::initMap(x, y);
+    Game::openCell(x, y);
 }
 
-OBJECT_TYPE Game::GetTypePos(int x, int y) {
+OBJECT_TYPE Game::getTypePos(int x, int y) {
     if ((Game::table[x][y] & flag) != 0) {
         return OBJECT_TYPE::FLAG;
     }
@@ -173,53 +173,54 @@ OBJECT_TYPE Game::GetTypePos(int x, int y) {
     }
 }
 
-void Game::movementControl() {
+int Game::movementControl() {
     //std::cout << "\n\n\n\n\n\n\n" << curPosX << " " << curPosY << "\n";
     auto cmd = Controller::GetCommand();
-    auto type = Game::GetTypePos(curPosX, curPosY);
+    auto type = Game::getTypePos(curPosX, curPosY);
     OBJECT_TYPE type2 = type;
     switch (cmd) {
         case Controller::MOVEMENT::LEFT:
-            type2 = Game::GetTypePos(curPosX, std::max(1, curPosY-1));
+            type2 = Game::getTypePos(curPosX, std::max(1, curPosY-1));
             Print::MoveCursor(curPosX, curPosY, type, curPosX, std::max(1, curPosY-1), type2);
             curPosY = std::max(1, curPosY-1);
-            return;
+            return 0;
         case Controller::MOVEMENT::RIGHT:
-            type2 = Game::GetTypePos(curPosX, std::min(m, curPosY+1));
+            type2 = Game::getTypePos(curPosX, std::min(m, curPosY+1));
             Print::MoveCursor(curPosX, curPosY, type, curPosX, std::min(m, curPosY+1), type2);
             curPosY = std::min(m, curPosY+1);
-            return;
+            return 0;
         case Controller::MOVEMENT::UP:
-            type2 = Game::GetTypePos(std::max(curPosX-1, 1), curPosY);
+            type2 = Game::getTypePos(std::max(curPosX-1, 1), curPosY);
             Print::MoveCursor(curPosX, curPosY, type, std::max(1, curPosX-1), curPosY, type2);
             curPosX = std::max(1, curPosX-1);
-            return;
+            return 0;
         case Controller::MOVEMENT::DOWN:
-            type2 = Game::GetTypePos(std::min(curPosX+1, n), curPosY);
+            type2 = Game::getTypePos(std::min(curPosX+1, n), curPosY);
             Print::MoveCursor(curPosX, curPosY, type, std::min(n, curPosX+1), curPosY, type2);
             curPosX = std::min(n, curPosX+1);
-            return;
+            return 0;
         case Controller::MOVEMENT::DIG:
             wasFirstMove = 1;
             if((table[curPosX][curPosY] & mines) != 0)
-                Game::LosePrint();
+                return 1;
 
-            Game::OpenCell(curPosX, curPosY);
-            return;
+// ***************** return value
+            Game::openCell(curPosX, curPosY);
+            return 0;
         case Controller::MOVEMENT::FLAGPUT:
-            if((table[curPosX][curPosY] & used) != 0) return;
+            if((table[curPosX][curPosY] & used) != 0) return 0;
             if((table[curPosX][curPosY] & flag) != 0){
                 table[curPosX][curPosY] ^= flag;
-                Print::RemoveFlag(curPosX, curPosY, Game::GetTypePos(curPosX, curPosY), REGULAR);
+                Print::RemoveFlag(curPosX, curPosY, Game::getTypePos(curPosX, curPosY), REGULAR);
                 Print::MoveCursor(curPosX, curPosY, type, curPosX, curPosY, OBJECT_TYPE::HIDDEN);
             }else {
                 table[curPosX][curPosY] |= flag;
                 Print::PutFlag(curPosX, curPosY);
                 Print::MoveCursor(curPosX, curPosY, type, curPosX, curPosY, OBJECT_TYPE::FLAG);
             }
-            return;
+            return 0;
         default:
-            return;
+            return 0;
     }
 }
 
@@ -229,61 +230,69 @@ void Game::Play() {
     Game::n = Console::In();
     Game::m = Console::In();
     Game::minesCount = Console::In();
-    Keyboard::GetKey();
+    Controller::GetCommand();
     Console::Clear();
 
+    Console::Init();
+
     Print::removeConsoleCursor();
-    Game::InitMap(n, m);
-    Game::PrintMap();
-    Game::PrintCircuit();
+    Game::initMap(n, m);
+    Game::printMap();
+    Game::printCircuit();
     Print::PrintCursor(curPosX, curPosY, HIDDEN);
 
     while(!Game::wasFirstMove){
         Game::movementControl();
     }
 
-    Game::InitGame(n, m, minesCount, curPosX, curPosY);
+    Game::initGame(n, m, minesCount, curPosX, curPosY);
     while(cellsTillVictory > 0){
-        Game::movementControl();
+        if(Game::movementControl()){
+            Game::losePrint();
+            return;
+        }
     }
 
     Print::PrintWin();
-    Keyboard::GetKey();
-    Print::addConsoleCursor();
+    Print::PrintString("Press any key to continue\n");
+    Controller::GetCommand();
     Console::Clear();
+    Print::addConsoleCursor();
 }
 
-void Game::LosePrint() {
+void Game::losePrint() {
     Console::Clear();
-    Game::PrintCircuit();
+    Game::printCircuit();
     for(int i = 1; i <= n; i++){
         for(int j = 1; j <= m; j++){
-            Game::LosePrintCurCell(i, j);
+            Game::losePrintCurCell(i, j);
         }
     }
     Print::addConsoleCursor();
-    Keyboard::GetKey();
-    exit(0);
+    Print::PrintChar(n+2, 0, "");
+    Print::PrintString("Press any key to continue\n");
+    Controller::GetCommand();
+    Console::Clear();
 }
 
-void Game::LosePrintCurCell(int x, int y) {
-    if((table[x][y] & mines) != 0){
-        if((table[x][y] & flag) != 0)
+void Game::losePrintCurCell(int x, int y) {
+    if ((table[x][y] & mines) != 0) {
+        if ((table[x][y] & flag) != 0)
             Print::PrintLose(x, y, MINEGREEN);
         else
             Print::PrintLose(x, y, MINERED);
-    }else {
-        Game::PrintPos(x, y);
+    } else {
+        Game::printPos(x, y);
     }
 }
 
-void Game::PrintCircuit(){
-    for(int i = 1; i <= m; i++) Print::PrintChar(0, i, "━");
-    for(int i = 1; i <= m; i++) Print::PrintChar(n+1, i, "━");
-    for(int i = 1; i <= n; i++) Print::PrintChar(i, m+1, "┃");
-    for(int i = 1; i <= n; i++) Print::PrintChar(i, 0, "┃");
-    Print::PrintChar(n+1, 0, "┗");
-    Print::PrintChar(0, m+1, "┓");
-    Print::PrintChar(n+1, m+1, "┛");
-    Print::PrintChar(0, 0, "┏");
+void Game::printCircuit() {
+        for (int i = 1; i <= m; i++) Print::PrintChar(0, i, "━");
+        for (int i = 1; i <= m; i++) Print::PrintChar(n + 1, i, "━");
+        for (int i = 1; i <= n; i++) Print::PrintChar(i, m + 1, "┃");
+        for (int i = 1; i <= n; i++) Print::PrintChar(i, 0, "┃");
+        Print::PrintChar(n + 1, 0, "┗");
+        Print::PrintChar(0, m + 1, "┓");
+        Print::PrintChar(n + 1, m + 1, "┛");
+        Print::PrintChar(0, 0, "┏");
 }

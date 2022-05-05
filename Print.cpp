@@ -14,6 +14,7 @@ std::map<OBJECT_TYPE, std::string> Print::oChar =   {{TIP_1, "1"},
                                                      {TIP_8, "8"},
                                                      {FLAG, "#"},
                                                      {HIDDEN, "."},
+        //{TIP_0, "@"},
                                                      {TIP_0, "░"},
                                                      {MINE, "*"}};
 
@@ -50,7 +51,6 @@ void Print::PutHidden(int x, int y){
 void Print::PutTip(int x, int y, OBJECT_TYPE type){
     Print::PrintObjectInPlace(x, y, type, REGULAR);
 }
-
 void Print::MoveCursor(int x, int y, OBJECT_TYPE type1, int x2, int y2, OBJECT_TYPE type2) {
     Print::PrintObjectInPlace(x, y, type1, REGULAR);
     Print::PrintObjectInPlace(x2, y2, type2, CURSOR);
@@ -70,6 +70,28 @@ void Print::PrintString(std::string s) {
 
 void Print::PrintLose(int x, int y, OBJECT_STATE state) {
     Print::PrintObjectInPlace(x, y, MINE, state);
+    //Console::Pause();
+    //Console::Clear();
+    //Print::PrintString("YOU LOSE\n");
+    /*Console::Out ("\n________________________________________________________\n"
+                  "/                                                      \\\n"
+                  "|                 Ha ha, you're dead                   |\n"
+                  "\\_________              _______________________________/\n"
+                  "          \\_         __/    ___---------__              \n"
+                  "            \\      _/      /              \\_            \n"
+                  "             \\    /       /                 \\           \n"
+                  "              |  /       | _    _ \\          \\          \n"
+                  "              | |       / / \\ / \\ |           \\         \n"
+                  "              | |       ||   ||   | |          |        \n"
+                  "              | |       | \\_//\\_/ |           |        \n"
+                  "              | |       |_| (||)    |_______|   |       \n"
+                  "              | |         |  ||     | _  / /   |        \n"
+                  "               \\ \\        |_________|| \\/ /   /         \n"
+                  "                \\ \\_       |_|_|_|_|/|  _/___/          \n"
+                  "                 \\__>       _ _/_ _ /  |                \n"
+                  "                          .|_|_|_|_|   |                \n"
+                  "                          |           /                 \n"
+                  "                          |__________/      ");//, Print::oState.at(OBJECT_STATE::REGULAR));*/
 }
 
 void Print::PrintWin() {

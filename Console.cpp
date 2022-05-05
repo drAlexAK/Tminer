@@ -1,8 +1,20 @@
 #include "Console.h"
 #include <iostream>
 
+// https://www.nayab.xyz/linux/escapecodes
+
+int Console::Init(){return 0;}
+int Console::Restore(){
+    printf("\033[m");
+    return 0;
+}
+
 void Console::Flush(){
     std::fflush(stdout);
+}
+
+void Console::Pause(){
+    system("PAUSE");
 }
 
 void Console::PrintSymbol(int x, int y, const std::string s, Font f) {

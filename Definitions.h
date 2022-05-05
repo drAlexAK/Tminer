@@ -19,13 +19,5 @@
 
 //===================== keys value
 
-#define righta 3067
-#define downa 3066
-#define lefta 3068
-#define upa 3065
-
-#define enter 10
-#define space 32
-#define r 114
 
 #define NONE -1

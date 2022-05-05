@@ -1,18 +1,25 @@
 #include "Controller.h"
 
 int Controller::GetCommand(){
-    auto cmd = Keyboard::GetKey();
-    if(cmd == enter){
-        return MOVEMENT::FLAGPUT;
-    }
 
-    if(cmd == space){
-        return MOVEMENT::DIG;
-    }
+    //std::cout << (int)cmd << "\n";
 
-    if(cmd < additionalchar){
-        return MOVEMENT::WRONGINPUT;
+    switch (Keyboard::GetKey()) {
+        case KEYS::ARROW_DOWN:
+            return MOVEMENT::DOWN;
+        case KEYS::ARROW_LEFT:
+            return MOVEMENT::LEFT;
+        case KEYS::ARROW_UP:
+            return MOVEMENT::UP;
+        case KEYS::ARROW_RIGHT:
+            return MOVEMENT::RIGHT;
+        case KEYS::ENTER:
+            return MOVEMENT::FLAGPUT;
+        case KEYS::SPACE:
+            return MOVEMENT::DIG;
+        case KEYS::q:
+            return MOVEMENT::QUITE;
+        default:
+            return MOVEMENT::WRONGINPUT;
     }
-
-    return cmd - additionalchar - 64;
 }

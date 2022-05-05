@@ -14,17 +14,17 @@ class Game{
     static int cellsTillVictory;
 
     static std::vector<std::vector<int>> table;
-    static void Dfs(int x, int y);
-    static void InitMap(int x, int y);
-    static void PrintPos(int x, int y);
-    static void PrintMap();
-    static OBJECT_TYPE GetTypePos(int x, int y);
-    static void OpenCell(int x, int y);
-    static void InitGame(int _n, int _m, int _minesCount, int x, int y);
-    static void movementControl();
-    static void LosePrintCurCell(int x, int y);
-    static void LosePrint();
-    static void PrintCircuit();
+    static void dfs(int x, int y);
+    static void initMap(int x, int y);
+    static void printPos(int x, int y);
+    static void printMap();
+    static OBJECT_TYPE getTypePos(int x, int y);
+    static void openCell(int x, int y);
+    static void initGame(int _n, int _m, int _minesCount, int x, int y);
+    static int movementControl();
+    static void losePrintCurCell(int x, int y);
+    static void losePrint();
+    static void printCircuit();
 public:
     static void Play();
 };

@@ -14,4 +14,5 @@ public:
     static void Cursor(bool enable);
     static void Out(const std::string &s);
     static int In();
+    static void Pause();
 };
