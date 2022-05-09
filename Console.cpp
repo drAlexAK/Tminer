@@ -7,6 +7,27 @@ int Console::Restore(){
     return 0;
 }
 
+std::map<Console::CONVERTER, std::string> mp = {{Console::FIG1, "1"},
+                                                {Console::FIG2, "2"},
+                                                {Console::FIG3, "3"},
+                                                {Console::FIG4, "4"},
+                                                {Console::FIG5, "5"},
+                                                {Console::FIG6, "6"},
+                                                {Console::FIG7, "7"},
+                                                {Console::FIG8, "8"},
+                                                {Console::MINE, "*"},
+                                                {Console::SHARP, "#"},
+                                                {Console::POINT, "."},
+                                                {Console::CELL, "░"},
+                                                {Console::NONECH, ""},
+                                                {Console::CIRCUITFLOOR, "━"},
+                                                {Console::CIRCUITFWALLS, "┃"},
+                                                {Console::CIRCUITFCEIL, "━"},
+                                                {Console::CIRCUITUPLEFT, "┏"},
+                                                {Console::CIRCUITDOWNLEFT, "┗"},
+                                                {Console::CIRCUITDOWNRIGHT, "┛"},
+                                                {Console::CIRCUITUPRIGHT,  "┓"}};
+
 void Console::Flush(){
     std::fflush(stdout);
 }
@@ -15,7 +36,8 @@ void Console::Pause(){
     system("PAUSE");
 }
 
-void Console::PrintSymbol(int x, int y, const std::string s, Font f) {
+void Console::PrintSymbol(int x, int y, CONVERTER symbol, Font f){
+    std::string s = mp[symbol];
     std::string cmd = f.ToString();
     printf("\033[%d;%dH\x1b[%sm%s\x1b[0m", x+1, y+1, cmd.c_str(), s.c_str());
     Flush();

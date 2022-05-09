@@ -11,7 +11,7 @@ class Print{
     static int xBeginCoor;
     static int yBeginCoor;
 public:
-    static std::map<OBJECT_TYPE, std::string> oChar;
+    static std::map<OBJECT_TYPE, Console::CONVERTER> oChar;
     static std::map<OBJECT_STATE, Font> oState;
 
     static void PutFlag(int x, int y);
@@ -22,7 +22,7 @@ public:
     static void PrintLose(int x, int y, OBJECT_STATE state);
     static void PrintWin();
     static void PrintDead();
-    static void PrintChar(int x, int y, std::string s);
+    static void PrintChar(int x, int y, Console::CONVERTER symbol);
 
     static void RemoveFlag(int x, int y, OBJECT_TYPE type, OBJECT_STATE state);
     static void PrintCursor(int x, int y, OBJECT_TYPE type);

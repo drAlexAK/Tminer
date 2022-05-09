@@ -5,6 +5,37 @@
 static DWORD originalConsoleMode;;
 static HANDLE stdoutHandle;
 
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+
+std::map<Console::CONVERTER, char> mp = {{Console::FIG1, '1'},
+                                                {Console::FIG2, '2'},
+                                                {Console::FIG3, '3'},
+                                                {Console::FIG4, '4'},
+                                                {Console::FIG5, '5'},
+                                                {Console::FIG6, '6'},
+                                                {Console::FIG7, '7'},
+                                                {Console::FIG8, '8'},
+                                                {Console::MINE, '*'},
+                                                {Console::SHARP, '#'},
+                                                {Console::POINT, '.'},
+                                                {Console::CELL, (char) 178}, //░
+                                                {Console::NONECH, ' '},
+                                                {Console::CIRCUITFLOOR, (char) 196},
+                                                {Console::CIRCUITFWALLS, (char) 179},
+                                                {Console::CIRCUITFCEIL, (char) 196},
+                                                {Console::CIRCUITUPLEFT, (char)218},
+                                                {Console::CIRCUITDOWNLEFT, (char)192},
+                                                {Console::CIRCUITDOWNRIGHT, (char)217},
+                                                {Console::CIRCUITUPRIGHT,  (char)191}};
+
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 int Console::Init() {
 
     SetConsoleOutputCP(CP_UTF8);
@@ -56,18 +87,16 @@ void Console::Flush(){
     std::fflush(stdout);
 }
 
-void Console::PrintSymbol(int x, int y, const std::string s, Font f) {
+void Console::PrintSymbol(int x, int y, Console::CONVERTER symbol, Font f) {
+    gotoxy(y, x);
     std::string cmd = f.ToString();
-    printf("\033[%d;%dH\x1b[%sm%s\x1b[0m", x+1, y+1, cmd.c_str(), s.c_str());
+    char s = mp[symbol];
+    printf("%c", s);
     Console::Flush();
 }
 
 void Console::PrintString(const std::string s, Font f){
-    std::string cmd = f.ToString();
-    for(int i = 0; i < (int)s.size(); i++){
-        std::string ch = s.substr(i, 1);
-        printf("\x1b[%sm%s\x1b[0m", cmd.c_str(), ch.c_str());
-    }
+    printf("%s", s.c_str());
     Flush();
 }
 
@@ -91,7 +120,7 @@ void Console::Clear(){
     // Fill the entire buffer with the current colors and attributes
     if (!FillConsoleOutputAttribute( stdoutHandle, csbi.wAttributes, cellCount, homeCoords, &count)) return;
 
-    // Move the cursor top-left corner 
+    // Move the cursor top-left corner
     SetConsoleCursorPosition( stdoutHandle, homeCoords );
 
 }

@@ -272,7 +272,7 @@ void Game::losePrint() {
             Game::losePrintCurCell(i, j);
         }
     }
-    Print::PrintChar(n+2, 0, "");
+    Print::PrintChar(n+2, 0, Console::NONECH);
     Print::PrintString("Press any key to continue\n");
     Controller::GetCommand();
     Console::Clear();
@@ -290,12 +290,12 @@ void Game::losePrintCurCell(int x, int y) {
 }
 
 void Game::printCircuit() {
-        for (int i = 1; i <= m; i++) Print::PrintChar(0, i, "━");
-        for (int i = 1; i <= m; i++) Print::PrintChar(n + 1, i, "━");
-        for (int i = 1; i <= n; i++) Print::PrintChar(i, m + 1, "┃");
-        for (int i = 1; i <= n; i++) Print::PrintChar(i, 0, "┃");
-        Print::PrintChar(n + 1, 0, "┗");
-        Print::PrintChar(0, m + 1, "┓");
-        Print::PrintChar(n + 1, m + 1, "┛");
-        Print::PrintChar(0, 0, "┏");
+        for (int i = 1; i <= m; i++) Print::PrintChar(0, i, Console::CIRCUITFCEIL);
+        for (int i = 1; i <= m; i++) Print::PrintChar(n + 1, i, Console::CIRCUITFLOOR);
+        for (int i = 1; i <= n; i++) Print::PrintChar(i, m + 1, Console::CIRCUITFWALLS);
+        for (int i = 1; i <= n; i++) Print::PrintChar(i, 0, Console::CIRCUITFWALLS);
+        Print::PrintChar(n + 1, 0, Console::CIRCUITDOWNLEFT);
+        Print::PrintChar(0, m + 1, Console::CIRCUITUPRIGHT);
+        Print::PrintChar(n + 1, m + 1, Console::CIRCUITDOWNRIGHT);
+        Print::PrintChar(0, 0, Console::CIRCUITUPLEFT);
 }

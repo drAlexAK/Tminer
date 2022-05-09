@@ -4,19 +4,18 @@
 int Print::xBeginCoor = 1;
 int Print::yBeginCoor = 1;
 
-std::map<OBJECT_TYPE, std::string> Print::oChar =   {{TIP_1, "1"},
-                                                     {TIP_2, "2"},
-                                                     {TIP_3, "3"},
-                                                     {TIP_4, "4"},
-                                                     {TIP_5, "5"},
-                                                     {TIP_6, "6"},
-                                                     {TIP_7, "7"},
-                                                     {TIP_8, "8"},
-                                                     {FLAG, "#"},
-                                                     {HIDDEN, "."},
-        //{TIP_0, "@"},
-                                                     {TIP_0, "░"},
-                                                     {MINE, "*"}};
+std::map<OBJECT_TYPE, Console::CONVERTER> Print::oChar =   {{TIP_1, Console::FIG1},
+                                                     {TIP_2, Console::FIG2},
+                                                     {TIP_3, Console::FIG3},
+                                                     {TIP_4, Console::FIG4},
+                                                     {TIP_5, Console::FIG5},
+                                                     {TIP_6, Console::FIG6},
+                                                     {TIP_7, Console::FIG7},
+                                                     {TIP_8, Console::FIG8},
+                                                     {FLAG, Console::SHARP},
+                                                     {HIDDEN, Console::POINT},
+                                                     {TIP_0, Console::CELL},
+                                                     {MINE, Console::MINE}};
 
 std::map<OBJECT_STATE, Font> Print::oState =  {{REGULAR, Font(NONE, BLACK, BG_WHITE)},
                                                {PUTFLAG, {NONE, BLACK, BG_WHITE}},
@@ -95,6 +94,6 @@ void Print::PrintWin() {
                  "  |_|    \\___/   \\___/          \\_/\\_/    \\___/  |_|\\_|\n");
 }
 
-void Print::PrintChar(int x, int y, std::string s){
-    Console::PrintSymbol(x + xBeginCoor, y + yBeginCoor, s, {NONE, NONE, NONE});
+void Print::PrintChar(int x, int y, Console::CONVERTER symbol){
+    Console::PrintSymbol(x + xBeginCoor, y + yBeginCoor, symbol, {NONE, NONE, NONE});
 }
