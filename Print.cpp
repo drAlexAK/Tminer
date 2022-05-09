@@ -17,11 +17,11 @@ std::map<OBJECT_TYPE, Console::CONVERTER> Print::oChar =   {{TIP_1, Console::FIG
                                                      {TIP_0, Console::CELL},
                                                      {MINE, Console::MINE}};
 
-std::map<OBJECT_STATE, Font> Print::oState =  {{REGULAR, Font(NONE, BLACK, BG_WHITE)},
+std::map<OBJECT_STATE, Font> Print::oState = {{REGULAR, Font(NONE, BLACK, BG_WHITE)},
                                                {PUTFLAG, {NONE, BLACK, BG_WHITE}},
-                                               {MINEGREEN, {BLINKING, GREEN, BG_WHITE}},
-                                               {MINERED, {BLINKING, RED, BG_WHITE}},
-                                               {CURSOR, {BLINKING, WHITE, BG_BLACK}}};
+                                               {MINEGREEN, {NONE, GREEN, BG_WHITE}},
+                                               {MINERED, {NONE, RED, BG_WHITE}},
+                                               {CURSOR, {NONE, WHITE, BG_BLACK}}};
 
 void Print::PrintObjectInPlace(int x, int y, OBJECT_TYPE object_type, OBJECT_STATE object_state){
     Console::PrintSymbol(x + xBeginCoor, y + yBeginCoor, Print::oChar.at(object_type), Print::oState.at(object_state));
@@ -56,7 +56,7 @@ void Print::MoveCursor(int x, int y, OBJECT_TYPE type1, int x2, int y2, OBJECT_T
 }
 
 void Print::PrintString(std::string s) {
-    Console::PrintString(s, Print::oState.at(OBJECT_STATE::REGULAR));
+    Console::PrintString(s, {-1, WHITE, -1});
 }
 
 void Print::PrintLose(int x, int y, OBJECT_STATE state) {
@@ -74,16 +74,30 @@ void Print::PrintDead(){
                   "             \\    /       /                 \\           \n"
                   "              |  /       | _    _ \\          \\          \n"
                   "              | |       / / \\ / \\ |           \\         \n"
-                  "              | |       ||   ||   | |          |        \n"
+                  "              | |       ||   ||   | |           |        \n"
                   "              | |       | \\_//\\_/ |           |        \n"
                   "              | |       |_| (||)    |_______|   |       \n"
-                  "              | |         |  ||     | _  / /   |        \n"
+                  "              | |         |  ||     | _  / /    |        \n"
                   "               \\ \\        |_________|| \\/ /   /         \n"
                   "                \\ \\_       |_|_|_|_|/|  _/___/          \n"
                   "                 \\__>       _ _/_ _ /  |                \n"
                   "                          .|_|_|_|_|   |                \n"
                   "                          |           /                 \n"
                   "                          |__________/      ");//, Print::oState.at(OBJECT_STATE::REGULAR));*/
+}
+
+void Print::PrintLogo(){
+    Console::Clear();
+    Console::Out(" _    __  __  _ \n"
+                 "| |_ |  \\/  |(_) _ __    ___  _ __\n"
+                 "| __|| |\\/| || || '_ \\  / _ \\| '__|\n"
+                 "| |_ | |  | || || | | ||  __/| |\n"
+                 " \\__||_|  |_||_||_| |_| \\___||_|\n");
+}
+
+void Print::PrintControl(){
+    Console::Clear();
+    Console::Out("Settings\nPress ^ to move up\nPress v to move down\nPress -> to move right\nPress <- to move left\nPress Space to open cells\nPress Enter to put a flag\n\nPress any key to continue\n");
 }
 
 void Print::PrintWin() {

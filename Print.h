@@ -22,6 +22,8 @@ public:
     static void PrintLose(int x, int y, OBJECT_STATE state);
     static void PrintWin();
     static void PrintDead();
+    static void PrintLogo();
+    static void PrintControl();
     static void PrintChar(int x, int y, Console::CONVERTER symbol);
 
     static void RemoveFlag(int x, int y, OBJECT_TYPE type, OBJECT_STATE state);

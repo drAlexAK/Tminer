@@ -227,6 +227,7 @@ int Game::movementControl() {
 void Game::Play() {
     Console::Init();
     Console::Clear();
+    Game::BeginPrint();
     Print::PrintString("Please enter n, m, count of mines\n");
     Game::n = Console::In();
     Game::m = Console::In();
@@ -249,6 +250,7 @@ void Game::Play() {
         if(Game::movementControl()){
             Game::losePrint();
             Print::PrintDead();
+            Controller::GetCommand();
             Console::SetCursor(true);
             Console::Restore();
             return;
@@ -298,4 +300,13 @@ void Game::printCircuit() {
         Print::PrintChar(0, m + 1, Console::CIRCUITUPRIGHT);
         Print::PrintChar(n + 1, m + 1, Console::CIRCUITDOWNRIGHT);
         Print::PrintChar(0, 0, Console::CIRCUITUPLEFT);
+}
+
+void Game::BeginPrint(){
+    Print::PrintLogo();
+    Print::PrintString("Press any key to continue\n");
+    Controller::GetCommand();
+    Print::PrintControl();
+    Controller::GetCommand();
+    Console::Clear();
 }

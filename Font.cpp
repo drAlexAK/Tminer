@@ -23,4 +23,3 @@ std::string Font::_ToString(int _type, int _color, int _bg_color) {
     if (_bg_color != -1) { ans.append(std::to_string(_bg_color)); }
     return ans;
 }
-

@@ -5,6 +5,8 @@
 static DWORD originalConsoleMode;;
 static HANDLE stdoutHandle;
 
+int cpDefaultMod = 0;
+
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 
 std::map<Console::CONVERTER, char> mp = {{Console::FIG1, '1'},
@@ -18,7 +20,7 @@ std::map<Console::CONVERTER, char> mp = {{Console::FIG1, '1'},
                                                 {Console::MINE, '*'},
                                                 {Console::SHARP, '#'},
                                                 {Console::POINT, '.'},
-                                                {Console::CELL, (char) 178}, //░
+                                                {Console::CELL, (char) 176}, //░
                                                 {Console::NONECH, ' '},
                                                 {Console::CIRCUITFLOOR, (char) 196},
                                                 {Console::CIRCUITFWALLS, (char) 179},
@@ -27,7 +29,6 @@ std::map<Console::CONVERTER, char> mp = {{Console::FIG1, '1'},
                                                 {Console::CIRCUITDOWNLEFT, (char)192},
                                                 {Console::CIRCUITDOWNRIGHT, (char)217},
                                                 {Console::CIRCUITUPRIGHT,  (char)191}};
-
 void gotoxy(int x, int y)
 {
     COORD coord;
@@ -36,9 +37,28 @@ void gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+void Color(int color)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void color(Font f){
+    int a;
+    switch(f.color){
+        case 31: //red
+            a = 4;
+            break;
+        default:
+            a = f.color - 30;
+    }
+    Color(16 * (f.bg_color - 40) + a);
+}
+
 int Console::Init() {
 
-    SetConsoleOutputCP(CP_UTF8);
+    //SetConsoleOutputCP(CP_UTF8);
+    SetConsoleOutputCP(437);
+    cpDefaultMod = GetConsoleOutputCP();
 
     DWORD currentConsoleMode = 0;
 
@@ -63,9 +83,12 @@ int Console::Init() {
 
 int Console::Restore() {
     // Reset colors
-    printf("\x1b[0m");
+    //printf("\x1b[0m");
 
     // Set original console mode
+
+    SetConsoleOutputCP(cpDefaultMod);
+
     if(!SetConsoleMode(stdoutHandle, originalConsoleMode)) {
         return(GetLastError());
     }
@@ -89,13 +112,14 @@ void Console::Flush(){
 
 void Console::PrintSymbol(int x, int y, Console::CONVERTER symbol, Font f) {
     gotoxy(y, x);
-    std::string cmd = f.ToString();
+    color(f);
     char s = mp[symbol];
     printf("%c", s);
     Console::Flush();
 }
 
 void Console::PrintString(const std::string s, Font f){
+    color({-1, 37, 40});
     printf("%s", s.c_str());
     Flush();
 }
