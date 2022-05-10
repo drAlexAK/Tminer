@@ -1,9 +1,10 @@
 #include "Console.h"
 #include <iostream>
 
-int Console::Init(){return 0;}
+int Console::Init(){Console::SetCursor(false);return 0;}
 int Console::Restore(){
     printf("\033[m");
+    SetCursor(true);
     return 0;
 }
 

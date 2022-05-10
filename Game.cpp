@@ -228,15 +228,14 @@ void Game::Play() {
     Console::Init();
     Console::Clear();
     Game::BeginPrint();
-    Print::PrintString("Please enter n, m, count of mines\n");
+    Print::PrintString("Please enter height, width of the map and count of mines\n");
     Game::n = Console::In();
     Game::m = Console::In();
     Game::minesCount = Console::In();
     Controller::GetCommand();
     Console::Clear();
 
-    Console::SetCursor(false);
-    Game::initMap(n, m);
+    Game::table.resize(Game::n + 2, std::vector<int>(Game::m + 2, mines)); //map init before first move
     Game::printMap();
     Game::printCircuit();
     Print::PrintCursor(curPosX, curPosY, HIDDEN);

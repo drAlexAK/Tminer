@@ -41,6 +41,7 @@ int Keyboard::getKey(){
             return ch;
         }
         ch = getchar();
+        tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
         return ch + additionalchar;
     }
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt );

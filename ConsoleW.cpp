@@ -59,6 +59,7 @@ int Console::Init() {
     //SetConsoleOutputCP(CP_UTF8);
     SetConsoleOutputCP(437);
     cpDefaultMod = GetConsoleOutputCP();
+    Console::SetCursor(false);
 
     DWORD currentConsoleMode = 0;
 
