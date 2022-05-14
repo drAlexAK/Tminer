@@ -97,7 +97,7 @@ void Print::PrintLogo(){
 
 void Print::PrintControl(){
     Console::Clear();
-    Console::Out("Settings\nPress ^ to move up\nPress v to move down\nPress -> to move right\nPress <- to move left\nPress Space to reveal field\nPress Enter to set up flag\n\nPress any key to continue\n");
+    Console::Out("Settings\nUse arrows to navigate\nPress Space to reveal field\nPress Enter to set up flag\nPress q to exit\n\nPress any key to continue\n");
 }
 
 void Print::PrintWin() {

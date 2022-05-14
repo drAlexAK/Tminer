@@ -29,7 +29,6 @@ int Keyboard::GetKey(){
                 return KEYS::ARROW_RIGHT;
             default:
                 return KEYS::UNKNOW;
-
         }
     }
 }

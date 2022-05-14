@@ -199,6 +199,8 @@ int Game::movementControl() {
             Print::MoveCursor(curPosX, curPosY, type, std::min(n, curPosX+1), curPosY, type2);
             curPosX = std::min(n, curPosX+1);
             return 0;
+        case Controller::MOVEMENT::QUITE:
+            return 2;
         case Controller::MOVEMENT::DIG:
             wasFirstMove = 1;
             if((table[curPosX][curPosY] & mines) != 0)
@@ -232,7 +234,7 @@ void Game::Play() {
     Game::n = Console::In();
     Game::m = Console::In();
     Game::minesCount = Console::In();
-    Controller::GetCommand();
+    Keyboard::GetKey();
     Console::Clear();
 
     Game::table.resize(Game::n + 2, std::vector<int>(Game::m + 2, mines)); //map init before first move
@@ -241,19 +243,27 @@ void Game::Play() {
     Print::PrintCursor(curPosX, curPosY, HIDDEN);
 
     while(!Game::wasFirstMove){
-        Game::movementControl();
+        if(Game::movementControl() == 2){
+            Console::Clear();
+            Console::Restore();
+            return;
+        }
     }
 
     Game::initGame(n, m, minesCount, curPosX, curPosY);
     while(cellsTillVictory > 0){
-        if(Game::movementControl()){
+        int t = Game::movementControl();
+        if(t == 1){
             Game::losePrint();
             Print::PrintDead();
             Controller::GetCommand();
-            Console::SetCursor(true);
+            Console::Clear();
             Console::Restore();
             return;
-
+        }else if(t == 2){
+            Console::Clear();
+            Console::Restore();
+            return;
         }
     }
 
