@@ -1,3 +1,6 @@
-//
-// Created by alex on 10/05/22.
-//
+#include "Game.h"
+
+int main() {
+    Game::Play();
+    return 0;
+}
