@@ -54,7 +54,7 @@ void Console::PrintString(const std::string s, Font f){
 }
 
 void Console::SetCursor(bool enable){
-    (enable ?  std::cout << "\033[?25h" :  std::cout << "\033[?25l");
+    (enable ? std::cout << "\033[?25h" :  std::cout << "\033[?25l");
 }
 
 void Console::Clear(){

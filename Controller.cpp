@@ -19,6 +19,8 @@ int Controller::GetCommand(){
             return MOVEMENT::DIG;
         case KEYS::q:
             return MOVEMENT::QUITE;
+        case KEYS::c:
+            return MOVEMENT::QUITE;
         default:
             return MOVEMENT::WRONGINPUT;
     }

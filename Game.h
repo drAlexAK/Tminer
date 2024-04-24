@@ -23,7 +23,7 @@ class Game{
     static void openCell(int x, int y);
     static void initGame(int _n, int _m, int _minesCount, int x, int y);
     static int movementControl();
-    static void BeginPrint();
+    static void beginPrint();
     static void losePrintCurCell(int x, int y);
     static void losePrint();
     static void printCircuit();
