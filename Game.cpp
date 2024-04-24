@@ -170,6 +170,8 @@ OBJECT_TYPE Game::getTypePos(int x, int y) {
             return TIP_7;
         case 8:
             return TIP_8;
+        default:
+            return TIP_0;
     }
 }
 
@@ -229,12 +231,16 @@ int Game::movementControl() {
 void Game::Play() {
     Console::Init();
     Console::Clear();
-    Game::BeginPrint();
-    Print::PrintString("Please enter height, width of the map and count of mines\n");
+    Game::beginPrint();
+    Console::Init();
+    Console::Clear();
+    Print::PrintString("Please enter three natural numbers:\nheight, width of the map, count of mines\n");
+    Console::Init();
     Game::n = Console::In();
     Game::m = Console::In();
     Game::minesCount = Console::In();
     Keyboard::GetKey();
+    Console::Init();
     Console::Clear();
 
     Game::table.resize(Game::n + 2, std::vector<int>(Game::m + 2, mines)); //map init before first move
@@ -311,7 +317,7 @@ void Game::printCircuit() {
         Print::PrintChar(0, 0, Console::CIRCUITUPLEFT);
 }
 
-void Game::BeginPrint(){
+void Game::beginPrint(){
     Print::PrintLogo();
     Print::PrintString("Press any key to continue\n");
     Controller::GetCommand();
